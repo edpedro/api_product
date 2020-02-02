@@ -1,23 +1,11 @@
-const http = require('http');
+const app = require('../src/app')
 const debug = require('debug')('nodestr:server');
-const express = require('express');
+const http = require('http');
 
-const app = express();
 const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port)
 
-const router = express.Router();
 const server = http.createServer(app)
-
-
-const route = router.get('/api', (req, res, next) => {
-  res.status(200).send({
-    title: "Api em Nodejs",
-    version: "0.1"
-  });
-});
-
-app.use('/', route);
 
 server.listen(port);
 server.on('error', onError)

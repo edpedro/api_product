@@ -1,15 +1,21 @@
 const express = require('express');
+const bodyParser = require('body-parser')
+const mongoose = require('mongoose')
 
 const app = express();
-const router = express.Router();
 
-const route = router.get('/api', (req, res, next) => {
-  res.status(200).send({
-    title: "Api em Nodejs",
-    version: "0.1"
-  });
-});
+//Conexao
+mongoose.connect('mongodb+srv://eduardo:34860760Du@api-product-qzzao.mongodb.net/test?retryWrites=true&w=majority')
 
-app.use('/', route);
+//Rotas
+const indexRouter = require("./routes/index")
+const productRouter = require("./routes/product")
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }))
+
+app.use('/api', indexRouter);
+app.use('/api/products', productRouter);
+
 
 module.exports = app;
