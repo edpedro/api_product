@@ -3,59 +3,75 @@ const Product = mongoose.model('Product');
 const Validator = require('../validators/validator')
 const repository = require("../repositores/ProdutoRepository")
 
-exports.get = (req, res) => {
-  repository.get().then(data => {
+exports.get = async (req, res) => {
+  try {
+    var data = await repository.get()
     res.status(200).send(data)
-  }).catch(e => {
-    res.status(400).send(e)
-  })
+  } catch (e) {
+    res.status(500).send({
+      message: 'Falha ao processar sua requisição'
+    })
+  }
+
 }
-exports.getBySlug = (req, res) => {
-  repository.getBySlug().then(data => {
+exports.getBySlug = async (req, res) => {
+  try {
+    var data = await repository.getBySlug(req.params.slug)
     res.status(200).send(data)
-  }).catch(e => {
-    res.status(400).send(e)
-  })
+  } catch (e) {
+    res.status(500).send({
+      message: 'Falha ao processar sua requisição'
+    })
+  }
 }
-exports.getById = (req, res) => {
-  repository.getById().then(data => {
+exports.getById = async (req, res) => {
+  try {
+    var data = await repository.getById(req.params.id)
     res.status(200).send(data)
-  }).catch(e => {
-    res.status(400).send(e)
-  })
+  } catch (e) {
+    res.status(500).send({
+      message: 'Falha ao processar sua requisição'
+    })
+  }
 }
-exports.getByTag = (req, res) => {
-  repository.getByTag().then(data => {
+exports.getByTag = async (req, res) => {
+  try {
+    var data = await repository.getByTag(req.params.tag)
     res.status(200).send(data)
-  }).catch(e => {
-    res.status(400).send(e)
-  })
+  } catch (e) {
+    res.status(500).send({
+      message: 'Falha ao processar sua requisição'
+    })
+  }
 }
-exports.put = (req, res) => {
-  repository.update(req.params.id, req.body).then(x => {
+exports.put = async (req, res) => {
+
+  try {
+    var data = await repository.update(req.params.id, req.body)
     res.status(200).send({
       message: 'Produto atualizado com sucesso!'
-    }).catch(e => {
-      res.status(400).send({
-        message: "Falha ao atualizar produto",
-        data: e
-      })
     })
-  })
+  } catch (e) {
+    res.status(400).send({
+      message: "Falha ao atualizar produto",
+      data: e
+    })
+  }
 }
-exports.delete = (req, res) => {
-  repository.delete(req.body.id).then(x => {
+exports.delete = async (req, res) => {
+  try {
+    var data = await repository.delete(req.body.id)
     res.status(200).send({
       message: 'Produto removido com sucesso!'
     })
-  }).catch(e => {
+  } catch (e) {
     res.status(400).send({
       message: 'Falha ao remover produto',
       data: e
     })
-  })
+  }
 }
-exports.post = (req, res) => {
+exports.post = async (req, res) => {
 
   let validatorErro = new Validator()
 
@@ -68,13 +84,13 @@ exports.post = (req, res) => {
     res.status(400).send(validatorErro.errors()).end();
     return;
   }
-
-  repository.create(req.body).then(x => {
+  try {
+    await repository.create(req.body)
     res.status(201).send({ message: "Produto cadastrado com sucesso!" });
-  }).catch(e => {
+  } catch (e) {
     res.status(400).send({
       message: "Produto não cadastrado!",
       data: e
     });
-  })
+  }
 };
