@@ -1,11 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
+const config = require('./config')
 
 const app = express();
 
 //Conexao
-mongoose.connect('mongodb+srv://eduardo:34860760Du@api-product-qzzao.mongodb.net/test?retryWrites=true&w=majority')
+mongoose.connect(config.connectionString)
 
 //Models
 const Product = require('./models/Product')
