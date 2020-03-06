@@ -15,13 +15,15 @@ const order = require("./models/order")
 const indexRouter = require("./routes/index")
 const productRouter = require("./routes/product")
 const customerRouter = require("./routes/customer")
+const orderRouter = require("./routes/order")
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use('/api', indexRouter);
 app.use('/api/products', productRouter);
-app.use('/api/customer', customerRouter);
+app.use('/api/customers', customerRouter);
+app.use('/api/orders', orderRouter);
 
 
 module.exports = app;
